@@ -3,63 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diego Amaro - Pentester</title>
+  <title>Venta de Coches Clásicos</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0e0e0e;
-      color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background: #222;
+      color: #fff;
+      padding: 1rem;
       text-align: center;
     }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.2em;
+    header input {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      border: none;
+      width: 80%;
+      max-width: 400px;
     }
-    p {
-      font-size: 1.2rem;
-      margin: 0.5em 0;
+    #car-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
     }
-    .buttons {
-      margin-top: 1.5em;
+    .car {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    .buttons a {
-      text-decoration: none;
-      color: #0e0e0e;
-      background-color: #00ffcc;
-      padding: 0.7em 1.5em;
-      border-radius: 10px;
-      margin: 0 0.5em;
-      transition: background 0.3s;
+    .car img {
+      width: 100%;
+      height: auto;
     }
-    .buttons a:hover {
-      background-color: #00ddb3;
+    .car h3 {
+      margin: 0.5rem;
     }
-    .footer {
-      position: absolute;
-      bottom: 1em;
-      font-size: 0.9em;
-      opacity: 0.6;
+    .car p {
+      margin: 0.5rem;
+      flex-grow: 1;
+    }
+    .car button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .car button:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>Diego Amaro</h1>
-  <p>Pentester · Desarrollador · Seguridad ofensiva</p>
-  <p>"Rompo sistemas para hacerlos más fuertes"</p>
-  <div class="buttons">
-    <a href="mailto:diego@amarosec.dev">📩 Contacto</a>
-    <a href="https://github.com/DiegoAmarus" target="_blank">💻 GitHub</a>
-    <a href="https://linkedin.com/in/amarosec" target="_blank">🔗 LinkedIn</a>
-    <a href="cv.pdf" target="_blank">📄 Ver CV</a>
-  </div>
-  <div class="footer">
-    &copy; 2025 Diego Amaro · amarosec.dev
-  </div>
+  <header>
+    <h1>Venta de Coches Clásicos</h1>
+    <input type="text" id="search" placeholder="Buscar por marca o modelo">
+  </header>
+  <div id="car-list"></div>
+  <script>
+    const cars = [
+      {brand: 'Ford', model: 'Mustang', year: 1967, price: 25000, image: 'https://via.placeholder.com/400x250?text=Ford+Mustang+1967'},
+      {brand: 'Chevrolet', model: 'Camaro', year: 1969, price: 30000, image: 'https://via.placeholder.com/400x250?text=Chevy+Camaro+1969'},
+      {brand: 'Volkswagen', model: 'Beetle', year: 1974, price: 15000, image: 'https://via.placeholder.com/400x250?text=VW+Beetle+1974'},
+      {brand: 'Porsche', model: '911', year: 1973, price: 60000, image: 'https://via.placeholder.com/400x250?text=Porsche+911+1973'}
+    ];
+
+    function renderCars(filter = '') {
+      const list = document.getElementById('car-list');
+      list.innerHTML = '';
+      const filtered = cars.filter(car => (`${car.brand} ${car.model}`).toLowerCase().includes(filter.toLowerCase()));
+      if (filtered.length === 0) {
+        list.innerHTML = '<p>No se encontraron coches</p>';
+        return;
+      }
+      filtered.forEach(car => {
+        const card = document.createElement('div');
+        card.className = 'car';
+        card.innerHTML = `
+          <img src="${car.image}" alt="${car.brand} ${car.model}">
+          <h3>${car.brand} ${car.model} (${car.year})</h3>
+          <p><strong>Precio:</strong> $${car.price.toLocaleString()}</p>
+          <button onclick="window.location.href='mailto:ventas@example.com?subject=Interesado en ${car.brand} ${car.model} (${car.year})'">Contactar</button>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    document.getElementById('search').addEventListener('input', (e) => {
+      renderCars(e.target.value);
+    });
+
+    renderCars();
+  </script>
 </body>
 </html>
